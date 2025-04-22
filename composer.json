@@ -1,0 +1,42 @@
+{
+  "name": "danielemontecchi/laravel-basics",
+  "description": "Base setup for all Laravel projects: config, rules, and best practices.",
+  "type": "library",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "DanieleMontecchi\\LaravelBasics\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Daniele Montecchi",
+      "email": "daniele@montecchi.me"
+    }
+  ],
+  "extra": {
+    "laravel": {
+      "providers": [
+        "DanieleMontecchi\\LaravelBasics\\LaravelBasicsServiceProvider"
+      ]
+    }
+  },
+  "require": {
+    "php": "^8.3.0",
+    "laravel/framework": "^11.44.2|^12.9.2"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.22.0",
+    "orchestra/testbench": "^10.2.1",
+    "pestphp/pest": "^3.8.1",
+    "pestphp/pest-plugin-type-coverage": "^3.5",
+    "phpstan/phpstan": "^2.1.12"
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
+}
