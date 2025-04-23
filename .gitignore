@@ -1,3 +1,14 @@
+/.env
+composer.lock
+
+/tests/.phpunit.cache
+/.idea/
+/.vscode/
+
+/node_modules/
+/public/build/
+/public/hot
+
 # Created by https://www.toptal.com/developers/gitignore/api/laravel,composer,phpstorm,sublimetext,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=laravel,composer,phpstorm,sublimetext,visualstudiocode
 

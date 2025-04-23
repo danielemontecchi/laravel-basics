@@ -1,15 +1,16 @@
 <?php
 
-namespace DanieleMontecchi\LaravelBasics\Support;
+namespace DanieleMontecchi\LaravelBasics\Contracts;
+
+use Illuminate\Support\Str;
 
 abstract class Configurable
 {
-    abstract public function name(): string;
     abstract public function apply(): void;
 
     public function enabled(): bool
     {
-        return config("laravel-basics.".$this->name(), true);
+        return config()->boolean('laravel-basics.'.Str::snake(self::class), true);
     }
 
     public function boot(): void

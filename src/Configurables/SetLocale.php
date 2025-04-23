@@ -1,19 +1,19 @@
-// src/Configurables/SetLocaleConfiguration.php
 <?php
 
 namespace DanieleMontecchi\LaravelBasics\Configurables;
 
 use Illuminate\Support\Str;
 use Carbon\Carbon;
-use DanieleMontecchi\LaravelBasics\Support\Configurable;
+use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
 
+/**
+ * Configures the system and Carbon locale based on `app.locale`.
+ *
+ * Ensures time formatting via setlocale() and Carbon::setLocale()
+ * matches the application's current language configuration.
+ */
 class SetLocale extends Configurable
 {
-    public function name(): string
-    {
-        return 'set_locale';
-    }
-
     public function apply(): void
     {
         $locale = config('app.locale');

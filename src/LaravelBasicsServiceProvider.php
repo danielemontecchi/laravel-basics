@@ -20,11 +20,11 @@ class LaravelBasicsServiceProvider extends ServiceProvider
         collect([
             Configurables\AutomaticallyEagerLoadRelationships::class,
             Configurables\DefaultPasswordRules::class,
-            Configurables\DisableLazyLoading::class,
+            Configurables\PreventLazyLoading::class,
             Configurables\FakeSleep::class,
             Configurables\ForceHttpsScheme::class,
             Configurables\ImmutableDates::class,
-            Configurables\LogQueryWarnings::class,
+            Configurables\PreventSilentlyDiscardingAttributes::class,
             Configurables\LogSlowQueries::class,
             Configurables\PreventAccessingMissingAttributes::class,
             Configurables\PreventStrayHttpRequests::class,

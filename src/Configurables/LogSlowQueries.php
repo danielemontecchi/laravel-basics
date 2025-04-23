@@ -2,21 +2,22 @@
 
 namespace DanieleMontecchi\LaravelBasics\Configurables;
 
-use DanieleMontecchi\LaravelBasics\Support\Configurable;
+use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * Logs slow database queries that exceed a configurable threshold.
+ *
+ * Helps identify performance issues during development or staging.
+ * Each slow query is logged with its execution time and resolved bindings.
+ */
 class LogSlowQueries extends Configurable
 {
-    public function name(): string
-    {
-        return 'log_slow_queries';
-    }
-
     public function apply(): void
     {
         DB::listen(function (QueryExecuted $event) {
-            $threshold = config('database.slow_query_threshold', 100); // ms
+            $threshold = config()->integer('laravel-basics.slow_query_threshold', 100); // ms
 
             if ($event->time > $threshold) {
                 $sql = $event->sql;

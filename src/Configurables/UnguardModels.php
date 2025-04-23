@@ -3,15 +3,18 @@
 namespace DanieleMontecchi\LaravelBasics\Configurables;
 
 use Illuminate\Database\Eloquent\Model;
-use DanieleMontecchi\LaravelBasics\Support\Configurable;
+use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
 
+/**
+ * Disables mass assignment protection on all Eloquent models.
+ *
+ * Allows any attribute to be mass assigned without needing `$fillable`.
+ * Useful for seeders, testing, or internal-only projects.
+ *
+ * ⚠️ Use with caution, especially in public-facing applications.
+ */
 class UnguardModels extends Configurable
 {
-    public function name(): string
-    {
-        return 'unguard_models';
-    }
-
     public function apply(): void
     {
         Model::unguard();
