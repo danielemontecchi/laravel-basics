@@ -1,0 +1,16 @@
+#!/bin/sh
+echo "🔍 Running pre-commit checks..."
+
+# Validate env consistency
+bash ./scripts/check-env-vars.sh || exit 1
+
+# Run Peck (env validation)
+vendor/bin/peck validate || exit 1
+
+# Run PHP-CS-Fixer dry-run
+vendor/bin/php-cs-fixer fix --dry-run --diff || exit 1
+
+# Run PHPStan
+vendor/bin/phpstan analyse || exit 1
+
+echo "✅ All pre-commit checks passed!"
