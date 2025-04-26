@@ -1,4 +1,0 @@
-#!/bin/sh
-echo "🚀 Running test suite before push..."
-vendor/bin/pest || exit 1
-echo "✅ All tests passed!"

@@ -60,6 +60,6 @@ class LaravelBasicsServiceProvider extends ServiceProvider
             Configurables\ShouldBeStrict::class,
             Configurables\UnguardModels::class,
             Configurables\ViteAggressivePrefetching::class,
-        ])->each->boot();
+        ])->each(fn($class) => app($class)->boot());
     }
 }

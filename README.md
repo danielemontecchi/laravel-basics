@@ -43,20 +43,25 @@ php artisan basics:setup
 
 This command will offer to install and configure the following:
 
-- **Laravel Debugbar**
-- **Laravel Log Viewer**
-- **Laravel IDE Helper**
-- **Laravel Ray** (optional)
-- **Laravel Backup** (optional)
-- **Security Checker** (optional)
-- **PHP-CS-Fixer**:
-  - Automatically installed as a dev dependency
-  - Publishes a `.php-cs-fixer.dist.php` file with Laravel and tab-based formatting rules
-- **Husky Git Hooks**:
-  - Installs and enables Husky via `npx husky install`
-  - Automatically sets up:
-    - ✅ `pre-commit`: checks `.env` vs `.env.example`, and runs `php-cs-fixer fix --dry-run --diff`
-    - ✅ `pre-push`: runs the full test suite using Pest
+- **Laravel Folio**: page based routing for Laravel.
+- **Laravel Octane**: supercharge your Laravel application's performance.
+- **Laravel Pulse**: real-time application performance monitoring dashboard.
+- **Laravel Reverb**: real-time WebSocket communication backend for Laravel.
+- **Laravel Debugbar**: debugbar for Laravel applications.
+- **Log Viewer**: fast and beautiful Log Viewer for Laravel logs.
+- **Laravel Ray**: debug with Ray to fix problems faster.
+- **Laravel Backup**: backup your Laravel applications.
+- **Symfony Security Checker**: scan your app dependencies for known vulnerabilities.
+- **Predis**: a flexible and feature-complete Redis/Valkey client for PHP.
+- **Laravel Horizon**: dashboard and queue configuration for Laravel queues.
+- **PHP-CS-Fixer**: a tool to automatically fix PHP Coding Standards issues.
+- **PHPStan**: discover bugs in your code without running it (static analysis).
+- **EditorConfig**: helps maintain consistent coding styles for multiple developers.
+- **Pest**: an elegant PHP testing framework.
+- **Peck**: identifies wording or spelling mistakes in your codebase.
+- **Laravel IDE Helper**: generates IDE helper files for better autocompletion.
+- **Husky Git Hooks**: improves your commits and more.
+- **gitignore**: a standard file specifies for Laravel project.
 
 You can safely rerun this command. It will never overwrite files without asking for confirmation.
 
