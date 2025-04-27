@@ -4,6 +4,7 @@ namespace DanieleMontecchi\LaravelBasics\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use function Laravel\Prompts\multiselect;
 
@@ -350,8 +351,11 @@ class BasicsSetupCommand extends Command
     protected function execShell(string $command, bool $silent = true): bool|string
     {
         if ($silent) $command .= ' > /dev/null 2>&1';
+        $return = exec($command);
 
-        return exec($command);
+        Sleep::for(2)->seconds();
+
+        return $return;
     }
 
 }
