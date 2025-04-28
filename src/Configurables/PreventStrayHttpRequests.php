@@ -13,11 +13,6 @@ use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
  */
 class PreventStrayHttpRequests extends Configurable
 {
-    public function enabled(): bool
-    {
-        return parent::enabled() && app()->runningUnitTests();
-    }
-
     public function apply(): void
     {
         Http::preventStrayRequests();

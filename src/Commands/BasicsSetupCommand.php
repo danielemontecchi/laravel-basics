@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Sleep;
 use Illuminate\Support\Str;
 use function Laravel\Prompts\multiselect;
+use Symfony\Component\Process\Process;
 
 class BasicsSetupCommand extends Command
 {
@@ -27,21 +28,21 @@ class BasicsSetupCommand extends Command
 
         // Laravel Folio
         if (in_array('folio', $selectedKeys)) {
-            $this->execShell('composer require laravel/folio');
+            $this->runShell('composer require laravel/folio');
             $this->callSilent('folio:install');
             $this->line('✅ Laravel Folio installed and configured.');
         }
 
         // Laravel Octane
         if (in_array('octane', $selectedKeys)) {
-            $this->execShell('composer require laravel/octane');
+            $this->runShell('composer require laravel/octane');
             $this->callSilent('octane:install');
             $this->line('✅ Laravel Octane installed and configured.');
         }
 
         // Laravel Pulse
         if (in_array('pulse', $selectedKeys)) {
-            $this->execShell('composer require laravel/pulse');
+            $this->runShell('composer require laravel/pulse');
             $this->callSilent('vendor:publish', ['--provider', 'Laravel\\Pulse\\PulseServiceProvider']);
             $this->callSilent('migrate');
             $this->callSilent('vendor:publish', ['--tag', 'pulse-config']);
@@ -50,10 +51,10 @@ class BasicsSetupCommand extends Command
 
         // Laravel Reverb
         if (in_array('reverb', $selectedKeys)) {
-            $this->execShell('composer require install:broadcasting');
-            $this->updateEnvKey('REVERB_APP_ID');
-            $this->updateEnvKey('REVERB_APP_KEY');
-            $this->updateEnvKey('REVERB_APP_SECRET');
+            $this->runShell('composer require install:broadcasting');
+            $this->addEnvKey('REVERB_APP_ID');
+            $this->addEnvKey('REVERB_APP_KEY');
+            $this->addEnvKey('REVERB_APP_SECRET');
             $this->line('✅ Laravel Reverb installed.');
         }
 
@@ -70,7 +71,7 @@ class BasicsSetupCommand extends Command
 
         // Laravel Debugbar
         if (in_array('debugbar', $selectedKeys)) {
-            $this->execShell('composer require barryvdh/laravel-debugbar --dev');
+            $this->runShell('composer require barryvdh/laravel-debugbar --dev');
             $this->callSilent('vendor:publish', ['--provider' => 'Barryvdh\\Debugbar\\ServiceProvider']);
             $this->updateConfig('debugbar.php', "'enabled' => env\\('DEBUGBAR_ENABLED', null\\)", "'enabled' => env('DEBUGBAR_ENABLED', env('APP_DEBUG', null))");
             $this->line('✅ Laravel Debugbar installed and configured.');
@@ -78,16 +79,16 @@ class BasicsSetupCommand extends Command
 
         // Laravel Log Viewer
         if (in_array('log-viewer', $selectedKeys)) {
-            $this->execShell('composer require opcodesio/log-viewer');
-            $this->callSilent('log-viewer:publish');
+            $this->runShell('composer require opcodesio/log-viewer');
             $this->callSilent('vendor:publish', ['--tag' => 'log-viewer-config']);
             $this->updateConfig('log-viewer.php', "'log-viewer'", "'logs'");
+            $this->callSilent('log-viewer:publish');
             $this->line('✅ Laravel Log Viewer installed and configured.');
         }
 
         // Laravel Ray
         if (in_array('ray', $selectedKeys)) {
-            $this->execShell('composer require spatie/laravel-ray --dev');
+            $this->runShell('composer require spatie/laravel-ray --dev');
             $this->line('✅ Laravel Ray installed.');
         }
 
@@ -103,13 +104,13 @@ class BasicsSetupCommand extends Command
 
         // Laravel Backup
         if (in_array('backup', $selectedKeys)) {
-            $this->execShell('composer require spatie/laravel-backup');
+            $this->runShell('composer require spatie/laravel-backup');
             $this->line('✅ Laravel Backup installed.');
         }
 
         // Security Checker
         if (in_array('security-checker', $selectedKeys)) {
-            $this->execShell('composer require enlightn/laravel-security-checker --dev');
+            $this->runShell('composer require enlightn/laravel-security-checker --dev');
             $this->line('✅ Laravel Security Checker installed.');
         }
 
@@ -125,14 +126,14 @@ class BasicsSetupCommand extends Command
 
         // Predis
         if (in_array('predis', $selectedKeys)) {
-            $this->execShell('composer require predis/predis');
+            $this->runShell('composer require predis/predis');
             $this->updateConfig('database.php', "'client' => 'phpredis'", "'client' => 'predis'");
             $this->line('✅ Predis installed and configured.');
         }
 
         // Laravel Horizon
         if (in_array('horizon', $selectedKeys)) {
-            $this->execShell('composer require laravel/horizon');
+            $this->runShell('composer require laravel/horizon');
             $this->callSilent('horizon:install');
             $this->line('✅ Laravel Horizon installed and configured.');
         }
@@ -149,21 +150,17 @@ class BasicsSetupCommand extends Command
         $selectedKeys = $this->multiSelect('Select the tools you want to install', $options);
 
         // PHP-CS-Fixer
-        $installed_php_cs_fixer = false;
         if (in_array('php-cs-fixer', $selectedKeys)) {
-            $this->execShell('composer require --dev friendsofphp/php-cs-fixer');
+            $this->runShell('composer require --dev friendsofphp/php-cs-fixer');
             File::copy(__DIR__ . '/../../resources/lint/php-cs-fixer.php', base_path('.php-cs-fixer.dist.php'));
             File::copy(__DIR__ . '/../../resources/lint/.lintstagedrc', base_path('.lintstagedrc'));
             $this->line('✅ PHP-CS-Fixer installed and configured.');
-            $installed_php_cs_fixer = true;
         }
 
         // PHPStan
-        $installed_phpstan = false;
         if (in_array('phpstan', $selectedKeys)) {
-            $this->execShell('composer require --dev phpstan/phpstan');
+            $this->runShell('composer require --dev phpstan/phpstan');
             $this->line('✅ PHPStan installed.');
-            $installed_phpstan = true;
         }
 
         if (in_array('editorconfig', $selectedKeys)) {
@@ -182,20 +179,16 @@ class BasicsSetupCommand extends Command
         $selectedKeys = $this->multiSelect('Select the tools you want to install', $options);
 
         // Pest
-        $installed_pest = false;
         if (in_array('pest', $selectedKeys)) {
-            $this->execShell('composer require --dev pestphp/pest');
-            $this->execShell('composer require --dev pestphp/pest-plugin-laravel');
+            $this->runShell('composer require --dev pestphp/pest');
+            $this->runShell('composer require --dev pestphp/pest-plugin-laravel');
             $this->line('✅ Pest installed.');
-            $installed_pest = true;
         }
 
         // Peck
-        $installed_peck = false;
         if (in_array('peck', $selectedKeys)) {
-            $this->execShell('composer require --dev peckphp/peck');
+            $this->runShell('composer require --dev peckphp/peck');
             $this->line('✅ Peck installed.');
-            $installed_peck = true;
         }
 
         $this->line("\n" . Str::repeat('-', 30) . "\n");
@@ -211,7 +204,7 @@ class BasicsSetupCommand extends Command
 
         // Laravel IDE Helper
         if (in_array('ide-helper', $selectedKeys)) {
-            $this->execShell('composer require barryvdh/laravel-ide-helper --dev');
+            $this->runShell('composer require barryvdh/laravel-ide-helper --dev');
             $this->callSilent('ide-helper:generate');
             $this->appendToComposerScript('post-update-cmd', '@php artisan ide-helper:generate');
             $this->appendToComposerScript('post-update-cmd', '@php artisan ide-helper:meta');
@@ -220,8 +213,8 @@ class BasicsSetupCommand extends Command
 
         // Git hooks (Husky)
         if (in_array('husky', $selectedKeys)) {
-            $this->execShell('npm install husky --save-dev');
-            $this->execShell('npx husky install');
+            $this->runShell('npm install --save-dev husky');
+            $this->runShell('npx husky init');
 
             if (!is_dir(base_path('.husky')) || !is_dir(base_path('.husky/scripts'))) {
                 File::makeDirectory(base_path('.husky/scripts'), 0755, true);
@@ -235,15 +228,15 @@ class BasicsSetupCommand extends Command
                 "echo \"🔍 Running pre-commit checks...\"\n\n" .
                 "# Validate env consistency\n" .
                 "bash .husky/scripts/check-env-vars.sh || exit 1\n\n";
-            if ($installed_peck) {
+            if ($this->isBinaryAvailable('peck')) {
                 $content .= "# Run Peck (env validation)\n" .
                     "vendor/bin/peck validate || exit 1\n\n";
             }
-            if ($installed_php_cs_fixer) {
+            if ($this->isBinaryAvailable('php-cs-fixer')) {
                 $content .= "# Run PHP-CS-Fixer\n" .
                     "vendor/bin/php-cs-fixer fix --dry-run --diff || exit 1\n\n";
             }
-            if ($installed_phpstan) {
+            if ($this->isBinaryAvailable('phpstan')) {
                 $content .= "# Run PHPStan\n" .
                     "vendor/bin/phpstan analyse --level max --no-progress --memory-limit 1G || exit 1\n\n";
             }
@@ -251,7 +244,7 @@ class BasicsSetupCommand extends Command
             File::put(base_path('.husky/pre-commit'), $content);
             chmod(base_path('.husky/pre-commit'), 0755);
 
-            if ($installed_pest) {
+            if ($this->isBinaryAvailable('pest')) {
                 $content = "#!/bin/sh\n" .
                     "echo \"🚀 Running test suite before push...\"\n" .
                     "vendor/bin/pest || exit 1\n" .
@@ -266,6 +259,17 @@ class BasicsSetupCommand extends Command
         // Gitignore
         if (in_array('gitignore', $selectedKeys)) {
             $content = file_get_contents('https://www.toptal.com/developers/gitignore/api/laravel,symfony,git,node,phpunit,php-cs-fixer,visualstudiocode,sublimetext,phpstorm+all,linux,macos,windows');
+            $content = "# DEFAULT LARAVEL\n" .
+                "/public/build\n" .
+                "/storage/pail\n" .
+                ".env.backup\n" .
+                ".env.production\n" .
+                ".phpactor.json\n" .
+                "/auth.json\n" .
+                "/.nova\n" .
+                "/.zed\n" .
+                "\n" .
+                $content;
             File::put(base_path('.gitignore'), $content);
             $this->line('✅ gitignore configured.');
         }
@@ -287,17 +291,17 @@ class BasicsSetupCommand extends Command
     {
         $path = config_path($file);
 
-        if (!file_exists($path)) {
+        if (!File::exists($path)) {
             $this->warn("⚠️ Config file {$file} not found, skipping.");
             return;
         }
 
         $contents = file_get_contents($path);
         $contents = preg_replace("/{$search}/", $replace, $contents);
-        file_put_contents($path, $contents);
+        File::put($path, $contents);
     }
 
-    protected function updateEnvKey(string $key, string $value = '', string $path = null): void
+    protected function addEnvKey(string $key, string $value = '', string $path = null): void
     {
         $path ??= base_path('.env');
 
@@ -310,7 +314,7 @@ class BasicsSetupCommand extends Command
 
         if (preg_match("/^{$keyPattern}=.*$/m", $env)) {
             // Replace existing key
-            $env = preg_replace("/^{$keyPattern}=.*$/m", "{$key}={$value}", $env);
+//            $env = preg_replace("/^{$keyPattern}=.*$/m", "{$key}={$value}", $env);
         } else {
             // Append key at the end
             $env .= PHP_EOL . "{$key}={$value}" . PHP_EOL;
@@ -319,16 +323,20 @@ class BasicsSetupCommand extends Command
         file_put_contents($path, $env);
 
         if ($path != '.env.example') {
-            $this->updateEnvKey($key, $value, '.env.example');
+            $this->addEnvKey($key, $value, '.env.example');
         }
     }
 
+    protected function isBinaryAvailable(string $binary): bool
+    {
+        return File::exists(base_path('vendor/bin/' . $binary));
+    }
 
     protected function appendToComposerScript(string $hook, string $command): void
     {
         $path = base_path('composer.json');
 
-        if (!file_exists($path)) {
+        if (!File::exists($path)) {
             $this->warn('⚠️ composer.json not found.');
             return;
         }
@@ -341,21 +349,39 @@ class BasicsSetupCommand extends Command
 
         if (!in_array($command, $composer['scripts'][$hook])) {
             $composer['scripts'][$hook][] = $command;
-            file_put_contents($path, json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+            File::put($path, json_encode($composer, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 //            $this->info("✅ Added '{$command}' to composer script: {$hook}");
 //        } else {
 //            $this->line("ℹ️ '{$command}' already present in {$hook}");
         }
     }
 
-    protected function execShell(string $command, bool $silent = true): bool|string
+    protected function runShell(string $command, bool $silent = true): bool
     {
-        if ($silent) $command .= ' > /dev/null 2>&1';
-        $return = exec($command);
+        $isComposer = false;
+        if (Str::startsWith($command, 'composer ')) {
+            $command = Str::replace('composer ', Str::finish(config('laravel-basics.binary.composer', 'composer'), ' '), $command);
+            $isComposer = true;
+        }
+        if (Str::startsWith($command, 'npm ')) {
+            $command = Str::replace('npm ', Str::finish(config('laravel-basics.binary.npm', 'npm'), ' '), $command);
+        }
+        if (Str::startsWith($command, 'npx ')) {
+            $command = Str::replace('npx ', Str::finish(config('laravel-basics.binary.npx', 'npx'), ' '), $command);
+        }
 
-        Sleep::for(2)->seconds();
+        $process = Process::fromShellCommandline($command, base_path());
 
-        return $return;
+        if ($silent) {
+            $process->run();
+        } else {
+            $process->run(function ($type, $buffer) {
+                echo $buffer;
+            });
+        }
+        if ($isComposer) Sleep::for(2)->seconds();
+
+        return $process->isSuccessful();
     }
 
 }

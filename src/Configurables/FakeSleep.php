@@ -15,11 +15,6 @@ use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
  */
 class FakeSleep extends Configurable
 {
-    public function enabled(): bool
-    {
-        return parent::enabled() && app()->runningUnitTests();
-    }
-
     public function apply(): void
     {
         Sleep::fake();

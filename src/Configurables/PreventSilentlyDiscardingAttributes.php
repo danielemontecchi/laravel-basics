@@ -15,6 +15,6 @@ class PreventSilentlyDiscardingAttributes extends Configurable
 {
     public function apply(): void
     {
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+        Model::preventSilentlyDiscardingAttributes();
     }
 }

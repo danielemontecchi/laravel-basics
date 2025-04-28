@@ -15,6 +15,6 @@ class PreventLazyLoading extends Configurable
 {
     public function apply(): void
     {
-        Model::preventLazyLoading(!app()->isProduction());
+        Model::preventLazyLoading();
     }
 }

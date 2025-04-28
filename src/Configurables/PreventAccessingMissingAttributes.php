@@ -15,6 +15,6 @@ class PreventAccessingMissingAttributes extends Configurable
 {
     public function apply(): void
     {
-        Model::preventAccessingMissingAttributes(!app()->isProduction());
+        Model::preventAccessingMissingAttributes();
     }
 }

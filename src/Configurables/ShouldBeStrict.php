@@ -15,6 +15,6 @@ class ShouldBeStrict extends Configurable
 {
     public function apply(): void
     {
-        Model::shouldBeStrict(!app()->isProduction());
+        Model::shouldBeStrict();
     }
 }

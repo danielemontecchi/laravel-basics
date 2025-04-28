@@ -16,9 +16,6 @@ class DefaultPasswordRules extends Configurable
 {
     public function apply(): void
     {
-        Password::defaults(fn(): ?Password => app()->isProduction()
-            ? Password::min(12)->max(50)->uncompromised()
-            : null
-        );
+        Password::defaults(Password::min(12)->max(50)->uncompromised());
     }
 }

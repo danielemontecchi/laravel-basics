@@ -15,6 +15,6 @@ class ProhibitDestructiveCommands extends Configurable
 {
     public function apply(): void
     {
-        DB::prohibitDestructiveCommands(app()->isProduction());
+        DB::prohibitDestructiveCommands();
     }
 }
