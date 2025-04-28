@@ -2,8 +2,8 @@
 
 namespace DanieleMontecchi\LaravelBasics\Configurables;
 
-use Illuminate\Support\Facades\Http;
 use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Prevents real HTTP requests from being made during tests if Http::fake() is not used.
@@ -13,8 +13,17 @@ use DanieleMontecchi\LaravelBasics\Contracts\Configurable;
  */
 class PreventStrayHttpRequests extends Configurable
 {
+    public function enabled(): bool
+    {
+        return true;
+    }
+
     public function apply(): void
     {
-        Http::preventStrayRequests();
+        if (config()->boolean('laravel-basics.prevent_stray_http_requests', true)) {
+            Http::preventStrayRequests();
+        } else {
+            Http::allowStrayRequests();
+        }
     }
 }
