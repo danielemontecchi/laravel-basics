@@ -27,7 +27,17 @@ abstract class Configurable
      */
     public function enabled(): bool
     {
-        return config()->boolean('laravel-basics.enable.'.Str::snake(self::class), true);
+        $className = class_basename(get_class($this));
+        $configPath = 'laravel-basics.enable.'.Str::snake($className);
+        $configValue = config($configPath, false);
+
+        if (is_bool($configValue)) {
+            return $configValue;
+        } elseif (is_numeric($configValue)) {
+            return intval($configValue)>0;
+        } else {
+            return boolval($configValue);
+        }
     }
 
     /**
