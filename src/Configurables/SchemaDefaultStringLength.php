@@ -15,7 +15,7 @@ class SchemaDefaultStringLength extends Configurable
 {
     public function apply(): void
     {
-        $length = config()->integer('laravel-basics.schema_default_string_length', 191);
+        $length = config()->integer('laravel-basics.enable.schema_default_string_length', 191);
         Schema::defaultStringLength($length);
     }
 }

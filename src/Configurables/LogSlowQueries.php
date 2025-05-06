@@ -17,7 +17,7 @@ class LogSlowQueries extends Configurable
     public function apply(): void
     {
         DB::listen(function (QueryExecuted $event) {
-            $threshold = config()->integer('laravel-basics.slow_query_threshold', 100); // ms
+            $threshold = config()->integer('laravel-basics.enable.slow_query_threshold', 100); // ms
 
             if ($event->time > $threshold) {
                 $sql = $event->sql;

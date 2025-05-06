@@ -5,7 +5,7 @@ use DanieleMontecchi\LaravelBasics\Configurables;
 // AutomaticallyEagerLoadRelationships
 
 test('AutomaticallyEagerLoadRelationships boots without error', function () {
-    config(['laravel-basics.automatically_eager_load_relationships' => true]);
+    config(['laravel-basics.enable.automatically_eager_load_relationships' => true]);
     $configurable = new Configurables\AutomaticallyEagerLoadRelationships;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -15,7 +15,7 @@ test('AutomaticallyEagerLoadRelationships boots without error', function () {
 
 test('DefaultPasswordRules boots without error in production', function () {
     config(['app.env' => 'production']);
-    config(['laravel-basics.set_default_password_rules' => true]);
+    config(['laravel-basics.enable.default_password_rules' => true]);
     $configurable = new Configurables\DefaultPasswordRules;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -24,7 +24,7 @@ test('DefaultPasswordRules boots without error in production', function () {
 // FakeSleep
 
 test('FakeSleep boots without error in test environment', function () {
-    config(['laravel-basics.fake_sleep' => true]);
+    config(['laravel-basics.enable.fake_sleep' => true]);
     $configurable = new Configurables\FakeSleep;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -33,7 +33,7 @@ test('FakeSleep boots without error in test environment', function () {
 // ForceHttpsScheme
 
 test('ForceHttpsScheme boots without error', function () {
-    config(['laravel-basics.force_https_scheme' => true]);
+    config(['laravel-basics.enable.force_https_scheme' => true]);
     $configurable = new Configurables\ForceHttpsScheme;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -42,6 +42,7 @@ test('ForceHttpsScheme boots without error', function () {
 // ImmutableDates
 
 test('ImmutableDates boots without error', function () {
+    config(['laravel-basics.enable.immutable_dates' => true]);
     $configurable = new Configurables\ImmutableDates;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -50,7 +51,7 @@ test('ImmutableDates boots without error', function () {
 // LogSlowQueries
 
 test('LogSlowQueries boots without error', function () {
-    config(['laravel-basics.log_slow_queries' => true]);
+    config(['laravel-basics.enable.log_slow_queries' => true]);
     $configurable = new Configurables\LogSlowQueries;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -59,7 +60,7 @@ test('LogSlowQueries boots without error', function () {
 // PreventAccessingMissingAttributes
 
 test('PreventAccessingMissingAttributes boots without error', function () {
-    config(['laravel-basics.prevent_missing_attributes' => true]);
+    config(['laravel-basics.enable.prevent_accessing_missing_attributes' => true]);
     $configurable = new Configurables\PreventAccessingMissingAttributes;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -68,7 +69,7 @@ test('PreventAccessingMissingAttributes boots without error', function () {
 // PreventLazyLoading
 
 test('PreventLazyLoading boots without error', function () {
-    config(['laravel-basics.disable_lazy_loading' => true]);
+    config(['laravel-basics.enable.prevent_lazy_loading' => true]);
     $configurable = new Configurables\PreventLazyLoading;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -77,7 +78,7 @@ test('PreventLazyLoading boots without error', function () {
 // PreventSilentlyDiscardingAttributes
 
 test('PreventSilentlyDiscardingAttributes boots without error', function () {
-    config(['laravel-basics.prevent_silently_discarding_attributes' => true]);
+    config(['laravel-basics.enable.prevent_silently_discarding_attributes' => true]);
     $configurable = new Configurables\PreventSilentlyDiscardingAttributes;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -86,7 +87,7 @@ test('PreventSilentlyDiscardingAttributes boots without error', function () {
 // PreventStrayHttpRequests
 
 test('PreventStrayHttpRequests boots without error', function () {
-    config(['laravel-basics.prevent_stray_http_requests' => true]);
+    config(['laravel-basics.enable.prevent_stray_http_requests' => true]);
     $configurable = new Configurables\PreventStrayHttpRequests;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -95,7 +96,7 @@ test('PreventStrayHttpRequests boots without error', function () {
 // ProhibitDestructiveCommands
 
 test('ProhibitDestructiveCommands boots without error', function () {
-    config(['laravel-basics.prohibit_destructive_commands' => true]);
+    config(['laravel-basics.enable.prohibit_destructive_commands' => true]);
     $configurable = new Configurables\ProhibitDestructiveCommands;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -104,7 +105,7 @@ test('ProhibitDestructiveCommands boots without error', function () {
 // SchemaDefaultStringLength
 
 test('SchemaDefaultStringLength boots without error', function () {
-    config(['laravel-basics.set_default_string_length' => 191]);
+    config(['laravel-basics.enable.schema_default_string_length' => 191]);
     $configurable = new Configurables\SchemaDefaultStringLength;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -114,7 +115,7 @@ test('SchemaDefaultStringLength boots without error', function () {
 
 test('SetLocale boots without error', function () {
     config(['app.locale' => 'en']);
-    config(['laravel-basics.set_locale' => true]);
+    config(['laravel-basics.enable.set_locale' => true]);
     $configurable = new Configurables\SetLocale;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -123,7 +124,7 @@ test('SetLocale boots without error', function () {
 // ShouldBeStrict
 
 test('ShouldBeStrict boots without error', function () {
-    config(['laravel-basics.strict_model_mode' => true]);
+    config(['laravel-basics.enable.should_be_strict' => true]);
     $configurable = new Configurables\ShouldBeStrict;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -132,7 +133,7 @@ test('ShouldBeStrict boots without error', function () {
 // UnguardModels
 
 test('UnguardModels boots without error', function () {
-    config(['laravel-basics.unguard_models' => true]);
+    config(['laravel-basics.enable.unguard_models' => true]);
     $configurable = new Configurables\UnguardModels;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);
@@ -141,7 +142,7 @@ test('UnguardModels boots without error', function () {
 // ViteAggressivePrefetching
 
 test('ViteAggressivePrefetching boots without error', function () {
-    config(['laravel-basics.vite_aggressive_prefetching' => true]);
+    config(['laravel-basics.enable.vite_aggressive_prefetching' => true]);
     $configurable = new Configurables\ViteAggressivePrefetching;
     expect($configurable->enabled())->toBeTrue()
         ->and(fn() => $configurable->boot())->not->toThrow(Exception::class);

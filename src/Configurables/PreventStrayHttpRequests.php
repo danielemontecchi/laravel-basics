@@ -20,7 +20,7 @@ class PreventStrayHttpRequests extends Configurable
 
     public function apply(): void
     {
-        if (config()->boolean('laravel-basics.prevent_stray_http_requests', true)) {
+        if (config()->boolean('laravel-basics.enable.prevent_stray_http_requests', true)) {
             Http::preventStrayRequests();
         } else {
             Http::allowStrayRequests();
