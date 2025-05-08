@@ -1,8 +1,23 @@
 {
   "name": "danielemontecchi/laravel-basics",
-  "description": "Base setup for all Laravel projects: config, rules, and best practices.",
+  "description": "Zero-setup starter kit for Laravel with strict mode, performance tools, sensible defaults, and developer protections.",
   "type": "library",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Daniele Montecchi",
+      "email": "daniele@montecchi.me"
+    }
+  ],
+  "keywords": [
+    "laravel",
+    "bootstrap",
+    "essentials",
+    "setup",
+    "strict-mode",
+    "performance",
+    "developer-experience"
+  ],
   "autoload": {
     "psr-4": {
       "DanieleMontecchi\\LaravelBasics\\": "src/"
@@ -13,12 +28,6 @@
       "DanieleMontecchi\\LaravelBasics\\Tests\\": "tests/"
     }
   },
-  "authors": [
-    {
-      "name": "Daniele Montecchi",
-      "email": "daniele@montecchi.me"
-    }
-  ],
   "extra": {
     "laravel": {
       "providers": [
@@ -27,7 +36,7 @@
     }
   },
   "require": {
-    "php": "^8.1|^8.2|^8.3",
+    "php": "^8.1|^8.2|^8.3|^8.4",
     "laravel/framework": "^10|^11|^12"
   },
   "require-dev": {
