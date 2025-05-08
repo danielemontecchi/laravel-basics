@@ -138,12 +138,11 @@ Enables chunk prefetching in Vite to improve load performance.
 
 ---
 
-## Contributing
+## License
 
-Feel free to fork and contribute by submitting a pull request.
+Laravel Basics is open-source software licensed under the **MIT license**.
+See the [LICENSE.md](LICENSE.md) file for full details.
 
 ---
 
-## License
-
-This package is open-source software licensed under the [MIT license](LICENSE.md).
+Made with ❤️ by [Daniele Montecchi](https://danielemontecchi.com)
