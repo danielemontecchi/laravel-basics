@@ -13,11 +13,6 @@ use Illuminate\Support\Facades\Http;
  */
 class PreventStrayHttpRequests extends Configurable
 {
-    public function enabled(): bool
-    {
-        return true;
-    }
-
     public function apply(): void
     {
         if (config()->boolean('laravel-basics.enable.prevent_stray_http_requests', true)) {
