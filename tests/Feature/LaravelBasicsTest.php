@@ -24,7 +24,7 @@ test('AutomaticallyEagerLoadRelationships is disabled when config is false', fun
 
 test('AutomaticallyEagerLoadRelationships boots without error', function () {
     config(['laravel-basics.enable.automatically_eager_load_relationships' => true]);
-    expect(fn() => (new Configurables\AutomaticallyEagerLoadRelationships)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\AutomaticallyEagerLoadRelationships)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -43,7 +43,7 @@ test('DefaultPasswordRules is disabled when config is false', function () {
 
 test('DefaultPasswordRules boots without error when enabled', function () {
     config(['laravel-basics.enable.default_password_rules' => true]);
-    expect(fn() => (new Configurables\DefaultPasswordRules)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\DefaultPasswordRules)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -62,7 +62,7 @@ test('FakeSleep is disabled when config is false', function () {
 
 test('FakeSleep boots without error', function () {
     config(['laravel-basics.enable.fake_sleep' => true]);
-    expect(fn() => (new Configurables\FakeSleep)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\FakeSleep)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -121,7 +121,7 @@ test('LogSlowQueries is disabled when config is false', function () {
 
 test('LogSlowQueries boots without error', function () {
     config(['laravel-basics.enable.log_slow_queries' => 100]);
-    expect(fn() => (new Configurables\LogSlowQueries)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\LogSlowQueries)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -140,7 +140,7 @@ test('PreventAccessingMissingAttributes is disabled when config is false', funct
 
 test('PreventAccessingMissingAttributes boots without error', function () {
     config(['laravel-basics.enable.prevent_accessing_missing_attributes' => true]);
-    expect(fn() => (new Configurables\PreventAccessingMissingAttributes)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\PreventAccessingMissingAttributes)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -159,7 +159,7 @@ test('PreventLazyLoading is disabled when config is false', function () {
 
 test('PreventLazyLoading boots without error', function () {
     config(['laravel-basics.enable.prevent_lazy_loading' => true]);
-    expect(fn() => (new Configurables\PreventLazyLoading)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\PreventLazyLoading)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -178,7 +178,7 @@ test('PreventSilentlyDiscardingAttributes is disabled when config is false', fun
 
 test('PreventSilentlyDiscardingAttributes boots without error', function () {
     config(['laravel-basics.enable.prevent_silently_discarding_attributes' => true]);
-    expect(fn() => (new Configurables\PreventSilentlyDiscardingAttributes)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\PreventSilentlyDiscardingAttributes)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -197,7 +197,7 @@ test('PreventStrayHttpRequests is disabled when config is false', function () {
 
 test('PreventStrayHttpRequests boots without error', function () {
     config(['laravel-basics.enable.prevent_stray_http_requests' => true]);
-    expect(fn() => (new Configurables\PreventStrayHttpRequests)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\PreventStrayHttpRequests)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -216,7 +216,7 @@ test('ProhibitDestructiveCommands is disabled when config is false', function ()
 
 test('ProhibitDestructiveCommands boots without error', function () {
     config(['laravel-basics.enable.prohibit_destructive_commands' => true]);
-    expect(fn() => (new Configurables\ProhibitDestructiveCommands)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\ProhibitDestructiveCommands)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -238,7 +238,7 @@ test('SchemaDefaultStringLength applies the configured length', function () {
     (new Configurables\SchemaDefaultStringLength)->boot();
     // Schema::defaultStringLength stores it internally; verify no exception is thrown
     // and the feature works end-to-end
-    expect(fn() => Schema::defaultStringLength(191))->not->toThrow(Exception::class);
+    expect(fn () => Schema::defaultStringLength(191))->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -278,7 +278,7 @@ test('ShouldBeStrict is disabled when config is false', function () {
 
 test('ShouldBeStrict boots without error', function () {
     config(['laravel-basics.enable.should_be_strict' => true]);
-    expect(fn() => (new Configurables\ShouldBeStrict)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\ShouldBeStrict)->boot())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
@@ -317,5 +317,83 @@ test('ViteAggressivePrefetching is disabled when config is false', function () {
 
 test('ViteAggressivePrefetching boots without error', function () {
     config(['laravel-basics.enable.vite_aggressive_prefetching' => true]);
-    expect(fn() => (new Configurables\ViteAggressivePrefetching)->boot())->not->toThrow(Exception::class);
+    expect(fn () => (new Configurables\ViteAggressivePrefetching)->boot())->not->toThrow(Exception::class);
+});
+
+// ─────────────────────────────────────────────
+// DisableQueryLog
+// ─────────────────────────────────────────────
+
+test('DisableQueryLog is enabled when config is true', function () {
+    config(['laravel-basics.enable.disable_query_log' => true]);
+    expect((new Configurables\DisableQueryLog)->enabled())->toBeTrue();
+});
+
+test('DisableQueryLog is disabled when config is false', function () {
+    config(['laravel-basics.enable.disable_query_log' => false]);
+    expect((new Configurables\DisableQueryLog)->enabled())->toBeFalse();
+});
+
+test('DisableQueryLog boots without error', function () {
+    config(['laravel-basics.enable.disable_query_log' => true]);
+    expect(fn () => (new Configurables\DisableQueryLog)->boot())->not->toThrow(Exception::class);
+});
+
+// ─────────────────────────────────────────────
+// HttpClientGlobalTimeout
+// ─────────────────────────────────────────────
+
+test('HttpClientGlobalTimeout is enabled when config value is truthy', function () {
+    config(['laravel-basics.enable.http_client_global_timeout' => 30]);
+    expect((new Configurables\HttpClientGlobalTimeout)->enabled())->toBeTrue();
+});
+
+test('HttpClientGlobalTimeout is disabled when config is false', function () {
+    config(['laravel-basics.enable.http_client_global_timeout' => false]);
+    expect((new Configurables\HttpClientGlobalTimeout)->enabled())->toBeFalse();
+});
+
+test('HttpClientGlobalTimeout boots without error', function () {
+    config(['laravel-basics.enable.http_client_global_timeout' => 30]);
+    expect(fn () => (new Configurables\HttpClientGlobalTimeout)->boot())->not->toThrow(Exception::class);
+});
+
+// ─────────────────────────────────────────────
+// SetDefaultTimezone
+// ─────────────────────────────────────────────
+
+test('SetDefaultTimezone is enabled when config is true', function () {
+    config(['laravel-basics.enable.set_default_timezone' => true]);
+    expect((new Configurables\SetDefaultTimezone)->enabled())->toBeTrue();
+});
+
+test('SetDefaultTimezone is disabled when config is false', function () {
+    config(['laravel-basics.enable.set_default_timezone' => false]);
+    expect((new Configurables\SetDefaultTimezone)->enabled())->toBeFalse();
+});
+
+test('SetDefaultTimezone applies app timezone', function () {
+    config(['app.timezone' => 'Europe/Rome']);
+    config(['laravel-basics.enable.set_default_timezone' => true]);
+    (new Configurables\SetDefaultTimezone)->boot();
+    expect(date_default_timezone_get())->toBe('Europe/Rome');
+});
+
+// ─────────────────────────────────────────────
+// TrustProxies
+// ─────────────────────────────────────────────
+
+test('TrustProxies is enabled when config is true', function () {
+    config(['laravel-basics.enable.trust_proxies' => true]);
+    expect((new Configurables\TrustProxies)->enabled())->toBeTrue();
+});
+
+test('TrustProxies is disabled when config is false', function () {
+    config(['laravel-basics.enable.trust_proxies' => false]);
+    expect((new Configurables\TrustProxies)->enabled())->toBeFalse();
+});
+
+test('TrustProxies boots without error', function () {
+    config(['laravel-basics.enable.trust_proxies' => true]);
+    expect(fn () => (new Configurables\TrustProxies)->boot())->not->toThrow(Exception::class);
 });

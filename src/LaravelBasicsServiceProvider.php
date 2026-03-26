@@ -46,9 +46,11 @@ class LaravelBasicsServiceProvider extends ServiceProvider
         collect([
             Configurables\AutomaticallyEagerLoadRelationships::class,
             Configurables\DefaultPasswordRules::class,
+            Configurables\DisableQueryLog::class,
             Configurables\PreventLazyLoading::class,
             Configurables\FakeSleep::class,
             Configurables\ForceHttpsScheme::class,
+            Configurables\HttpClientGlobalTimeout::class,
             Configurables\ImmutableDates::class,
             Configurables\PreventSilentlyDiscardingAttributes::class,
             Configurables\LogSlowQueries::class,
@@ -56,8 +58,10 @@ class LaravelBasicsServiceProvider extends ServiceProvider
             Configurables\PreventStrayHttpRequests::class,
             Configurables\ProhibitDestructiveCommands::class,
             Configurables\SchemaDefaultStringLength::class,
+            Configurables\SetDefaultTimezone::class,
             Configurables\SetLocale::class,
             Configurables\ShouldBeStrict::class,
+            Configurables\TrustProxies::class,
             Configurables\UnguardModels::class,
             Configurables\ViteAggressivePrefetching::class,
         ])->each(fn($class) => app($class)->boot());

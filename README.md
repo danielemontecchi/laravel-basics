@@ -11,6 +11,15 @@ A zero-setup package to bootstrap your Laravel projects with a collection of sen
 developer protections, and performance tooling. Inspired
 by [nunomaduro/essentials](https://github.com/nunomaduro/essentials).
 
+---
+
+## Requirements
+
+- PHP `^8.1 || ^8.2 || ^8.3 || ^8.4`
+- Laravel `^10.0 | ^11.0 | ^12.0 | ^13.0`
+
+---
+
 ## Installation
 
 ```bash
@@ -33,7 +42,7 @@ This will create `config/laravel-basics.php`, where each feature can be individu
 
 ---
 
-### 🛠 Full Setup: Development Tools, Code Style and Git Hooks
+## Full Setup: Development Tools, Code Style and Git Hooks
 
 Run the following command to interactively install and configure useful development tools:
 
@@ -61,7 +70,7 @@ This command will offer to install and configure the following:
 - **Peck**: identifies wording or spelling mistakes in your codebase.
 - **Laravel IDE Helper**: generates IDE helper files for better autocompletion.
 - **Husky Git Hooks**: improves your commits and more.
-- **gitignore**: a standard file specifies for Laravel project.
+- **gitignore**: a standard gitignore file for Laravel projects.
 
 You can safely rerun this command. It will never overwrite files without asking for confirmation.
 
@@ -71,70 +80,108 @@ You can safely rerun this command. It will never overwrite files without asking 
 
 ### ✅ AutomaticallyEagerLoadRelationships
 
-Enables automatic eager loading of "touched" relationships in Laravel 10.37+.
-Avoids N+1 problems for `$touches` relationships.
+Enables automatic eager loading of relationships listed in `$touches` (Laravel 10.37+).
+Prevents N+1 queries caused by deferred loading of touched relations.
 
 ### ✅ DefaultPasswordRules
 
-Applies stricter password rules in production (min 12 chars, uncompromised).
-No rules enforced in dev/test environments.
+Enforces stricter password validation globally in production: minimum 12 characters, maximum 50,
+and cross-checked against known data breach databases.
+No rules are enforced in non-production environments.
+
+### ✅ DisableQueryLog
+
+Disables the Eloquent query log in production. The log accumulates all executed queries in memory
+and is only useful during debugging — leaving it enabled causes silent memory growth
+in long-running processes.
 
 ### ✅ FakeSleep
 
-Mocks `Sleep::for(...)` in unit tests, avoiding real delays during test execution.
+Mocks `Sleep::for(...)` during tests so no real time is spent waiting.
+Keeps the test suite fast without changing application code.
 
 ### ✅ ForceHttpsScheme
 
-Forces all generated URLs to use HTTPS — useful behind proxies and CDNs.
+Forces all generated URLs to use HTTPS via `URL::forceScheme('https')`.
+Useful when the app runs behind a proxy or CDN that terminates SSL.
+
+### ✅ HttpClientGlobalTimeout
+
+Sets a global timeout (default: 30 seconds) for all outgoing `Http::` client requests.
+Prevents hanging requests from blocking production workers indefinitely.
+Set the value in seconds; use `false` to disable.
 
 ### ✅ ImmutableDates
 
-Forces Laravel to use `CarbonImmutable` by default for all date attributes.
+Replaces mutable `Carbon` instances with `CarbonImmutable` across the entire application.
+Prevents accidental date mutations when passing date objects between methods.
 
 ### ✅ LogSlowQueries
 
-Logs database queries exceeding a threshold (default: 100ms). Useful for performance auditing.
+Logs database queries exceeding a configurable threshold (default: 100ms) as warnings.
+Helps surface performance issues early in development and staging.
 
 ### ✅ PreventAccessingMissingAttributes
 
-Throws an exception if you try to access a model attribute that doesn't exist.
+Throws an exception when accessing a model attribute that has not been loaded or does not exist.
+Catches typos and missing `select()` columns that would otherwise fail silently.
 
 ### ✅ PreventLazyLoading
 
-Throws an exception for lazy-loaded relationships in non-production environments.
+Throws an exception for any lazy-loaded relationship in non-production environments.
+Forces eager loading and prevents N+1 query problems from reaching production undetected.
 
 ### ✅ PreventSilentlyDiscardingAttributes
 
-Throws an exception if unknown attributes are passed to a model via `fill()` or `create()`.
+Throws an exception if attributes unknown to the model are passed to `fill()` or `create()`.
+Prevents silent data loss caused by mismatched field names or typos in mass assignments.
 
 ### ✅ PreventStrayHttpRequests
 
-Prevents real HTTP requests from leaking into your test suite if not faked with `Http::fake()`.
+Prevents real HTTP requests from being made during tests unless explicitly faked with `Http::fake()`.
+Protects against tests accidentally calling external services.
 
 ### ✅ ProhibitDestructiveCommands
 
-Prevents dangerous Artisan commands like `migrate:fresh`, `db:wipe`, etc. in production.
+Blocks Artisan commands like `migrate:fresh`, `db:wipe`, and `migrate:reset` in production.
+Reduces the risk of irreversible data loss from accidental command execution.
 
 ### ✅ SchemaDefaultStringLength
 
-Sets a default string length for schemas (default: 191), useful for utf8mb4 support on older MySQL.
+Sets the default string column length for migrations (default: 191).
+Required for utf8mb4 charset support on older MySQL and MariaDB versions.
+
+### ✅ SetDefaultTimezone
+
+Sets the PHP runtime timezone from the `app.timezone` config value.
+Complements `SetLocale` to ensure both locale and timezone are consistently applied
+from the application configuration.
 
 ### ✅ SetLocale
 
-Sets PHP and Carbon locale using the current `app.locale` config value.
+Sets the PHP and Carbon locale using the current `app.locale` config value.
+Ensures date formatting and string operations use the correct language settings.
 
 ### ✅ ShouldBeStrict
 
-Enables strict mode in Eloquent models in non-production environments.
-Helps catch unexpected property or relation access.
+Enables Eloquent strict mode globally in non-production environments.
+Combines `PreventLazyLoading`, `PreventSilentlyDiscardingAttributes`, and
+`PreventAccessingMissingAttributes` into a single model-level setting.
+
+### ✅ TrustProxies
+
+Configures trusted proxies for applications running behind load balancers or CDNs.
+Required for `ForceHttpsScheme` and correct client IP detection to work reliably
+when the app sits behind a reverse proxy. Trusts `127.0.0.1` and `::1` by default.
 
 ### ✅ UnguardModels
 
-Disables Laravel mass-assignment protection. Use only in safe environments.
+Disables Laravel mass-assignment protection globally.
+Use only in safe, controlled environments such as internal tools, seeders, or closed systems.
 
 ### ✅ ViteAggressivePrefetching
 
-Enables chunk prefetching in Vite to improve load performance.
+Enables aggressive chunk prefetching in Vite to reduce navigation latency in SPAs.
 
 ---
 
