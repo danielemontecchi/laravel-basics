@@ -4,6 +4,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/danielemontecchi/laravel-basics.svg?style=flat-square)](https://packagist.org/packages/danielemontecchi/laravel-basics)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/danielemontecchi/laravel-basics/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/danielemontecchi/laravel-basics/actions/workflows/tests.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=danielemontecchi_laravel-basics&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=danielemontecchi_laravel-basics)
+[![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=danielemontecchi_laravel-basics&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=danielemontecchi_laravel-basics)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE.md)
 [![Documentation](https://img.shields.io/badge/docs-available-brightgreen.svg?style=flat-square)](https://danielemontecchi.github.io/laravel-basics)
 
