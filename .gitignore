@@ -16,3 +16,6 @@ composer.lock
 
 # Claude
 /.claude/
+
+# Test coverage reports
+/tests/_reports/

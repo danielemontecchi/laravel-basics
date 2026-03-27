@@ -3,8 +3,10 @@
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DanieleMontecchi\LaravelBasics\Configurables;
+use DanieleMontecchi\LaravelBasics\LaravelBasicsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 
@@ -396,4 +398,63 @@ test('TrustProxies is disabled when config is false', function () {
 test('TrustProxies boots without error', function () {
     config(['laravel-basics.enable.trust_proxies' => true]);
     expect(fn () => (new Configurables\TrustProxies)->boot())->not->toThrow(Exception::class);
+});
+
+// ─────────────────────────────────────────────
+// Configurable — edge-case branches
+// ─────────────────────────────────────────────
+
+test('Configurable::enabled returns true for truthy string config values', function () {
+    config(['laravel-basics.enable.automatically_eager_load_relationships' => 'yes']);
+    expect((new Configurables\AutomaticallyEagerLoadRelationships)->enabled())->toBeTrue();
+});
+
+test('Configurable::enabled returns false for empty string config values', function () {
+    config(['laravel-basics.enable.automatically_eager_load_relationships' => '']);
+    expect((new Configurables\AutomaticallyEagerLoadRelationships)->enabled())->toBeFalse();
+});
+
+test('Configurable::boot skips apply when disabled', function () {
+    config(['laravel-basics.enable.unguard_models' => false]);
+    Model::reguard();
+    (new Configurables\UnguardModels)->boot();
+    expect(Model::isUnguarded())->toBeFalse();
+});
+
+// ─────────────────────────────────────────────
+// DisableQueryLog — behavioral
+// ─────────────────────────────────────────────
+
+test('DisableQueryLog turns off query logging', function () {
+    config(['laravel-basics.enable.disable_query_log' => true]);
+    DB::enableQueryLog();
+    (new Configurables\DisableQueryLog)->boot();
+    DB::select('SELECT 1');
+    expect(DB::getQueryLog())->toBeEmpty();
+});
+
+// ─────────────────────────────────────────────
+// LaravelBasicsServiceProvider
+// ─────────────────────────────────────────────
+
+test('LaravelBasicsServiceProvider register merges config', function () {
+    $provider = new LaravelBasicsServiceProvider(app());
+    $provider->register();
+
+    expect(config('laravel-basics'))->toBeArray()
+        ->and(config('laravel-basics.enable'))->toBeArray()
+        ->and(config('laravel-basics.enable.immutable_dates'))->toBeTrue()
+        ->and(config('laravel-basics.binary'))->toBeArray();
+});
+
+test('LaravelBasicsServiceProvider boot runs all configurables without error', function () {
+    config()->set('laravel-basics', require __DIR__ . '/../../config/laravel-basics.php');
+    config(['laravel-basics.enable.prevent_lazy_loading' => false]);
+    config(['laravel-basics.enable.prevent_accessing_missing_attributes' => false]);
+    config(['laravel-basics.enable.prevent_silently_discarding_attributes' => false]);
+    config(['laravel-basics.enable.should_be_strict' => false]);
+
+    $provider = new LaravelBasicsServiceProvider(app());
+    $provider->register();
+    expect(fn () => $provider->boot())->not->toThrow(Exception::class);
 });

@@ -11,10 +11,17 @@
     </testsuites>
     <source>
         <include>
-            <directory>app</directory>
             <directory>src</directory>
         </include>
+        <exclude>
+            <directory>src/Commands</directory>
+        </exclude>
     </source>
+    <coverage>
+        <report>
+            <clover outputFile="tests/_reports/coverage.xml"/>
+        </report>
+    </coverage>
     <php>
         <env name="APP_ENV" value="testing"/>
         <env name="APP_KEY" value="base64:ZjA0cjd4NGcycWh2bjV1MTh3Z2VraWJmZnlmYjd4dXY="/>
