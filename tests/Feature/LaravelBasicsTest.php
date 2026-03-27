@@ -7,6 +7,7 @@ use DanieleMontecchi\LaravelBasics\LaravelBasicsServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 
@@ -126,6 +127,25 @@ test('LogSlowQueries boots without error', function () {
     expect(fn () => (new Configurables\LogSlowQueries)->boot())->not->toThrow(Exception::class);
 });
 
+test('LogSlowQueries logs a warning when a query exceeds the threshold', function () {
+    // Boot with positive threshold so enabled() returns true.
+    // Change threshold to -1 before the query so the callback condition
+    // ($event->time > -1) is always satisfied, no matter how fast the query runs.
+    config(['laravel-basics.enable.log_slow_queries' => 100]);
+
+    $logged = [];
+    Log::listen(function ($entry) use (&$logged) {
+        $logged[] = $entry;
+    });
+
+    (new Configurables\LogSlowQueries)->boot();
+    config(['laravel-basics.enable.log_slow_queries' => -1]);
+    DB::select('SELECT 1');
+
+    expect($logged)->not->toBeEmpty()
+        ->and($logged[0]->level)->toBe('warning');
+});
+
 // ─────────────────────────────────────────────
 // PreventAccessingMissingAttributes
 // ─────────────────────────────────────────────
@@ -200,6 +220,11 @@ test('PreventStrayHttpRequests is disabled when config is false', function () {
 test('PreventStrayHttpRequests boots without error', function () {
     config(['laravel-basics.enable.prevent_stray_http_requests' => true]);
     expect(fn () => (new Configurables\PreventStrayHttpRequests)->boot())->not->toThrow(Exception::class);
+});
+
+test('PreventStrayHttpRequests allows stray requests when config is false', function () {
+    config(['laravel-basics.enable.prevent_stray_http_requests' => false]);
+    expect(fn () => (new Configurables\PreventStrayHttpRequests)->apply())->not->toThrow(Exception::class);
 });
 
 // ─────────────────────────────────────────────
